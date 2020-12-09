@@ -6,6 +6,7 @@
     <title>Document</title>
 </head>
 <body>
+<h1>Exercice 3</h1>
 
 <?php
 
