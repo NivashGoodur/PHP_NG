@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <?php $admin = FALSE; ?>
 </head>
 <body>
 <h1>Exercice 3</h1>
 
 <?php
 
-    $admin = FALSE;
 
 
     if ($admin == true){
