@@ -1,28 +1,37 @@
+<?php $admin = FALSE; ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <?php $admin = FALSE; ?>
+    <style>
+    .error{
+        color:red;
+        font-weight: bold;
+    }
+    </style>
 </head>
 <body>
 <h1>Exercice 3</h1>
 
-<?php
+    <?php
 
+    if($admin){
 
-
-    if ($admin == true){
-        echo('<p>Bonjour admin , voici le lien : <a href="#">LINK</a> </p>');
+        ?>
+        <p>Bonjour Admin ! Clique <a href="#"> sur ce lien </a> pour gérer le site ! </p>
+        <?php
+    } else {
+        ?>
+        <p class="error">Erreur, vous n'êtes pas admin ! </p>
+        <?php
     }
-    else{
-        echo('<p style="color:red;"> <strong>  Cette page est réservée aux admins </strong> </p>');
-    }
+
+    ?>
 
 
-
-?>
 
 
 </body>
