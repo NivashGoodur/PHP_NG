@@ -9,20 +9,18 @@
 </head>
 <body>
 
-<?php
-echo('<ul>');
 
-if($i == 0){
-    $i ++;
-    while($i <5001){
-        echo('<li>'.$i.'</li>');
+<ul>
+
+    <?php
+
+    while($i < 5000){
         $i++;
-        }
-}
-echo('</ul>');
+        echo '<li>'.$i.'</li>';
 
-?>
+    }
+    ?>
 
-
+</ul>
 </body>
 </html>
