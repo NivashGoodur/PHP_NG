@@ -1,9 +1,12 @@
-<?php $usersInfos = [
+<?php
+$usersInfos = [
     'firstname' => 'Enzo',
     'lastname'=> 'Alex',
     'adress' => 'France',
     'email' => 'test@gmail.com',
-    'age' => '20']; ?>
+    'age' => '20'
+];
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -12,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-    span{
+    .red{
         color:red;
         font-weight: bold;
     }
@@ -21,11 +24,13 @@
 <body>
 
     <?php
-    echo('Son prénom est <span>'.$usersInfos['firstname'].'</span>
-    ,nom: <span>'.$usersInfos['lastname'].'</span>
-    ,adresse : <span>'.$usersInfos['adress'].'</span>
-    ,email: <span>'.$usersInfos['email']. '</span>
-    et son âge :<span>' .$usersInfos['age'].'</span>');
+    echo(
+        'Son prénom est <span class="red">'.$usersInfos['firstname'].'</span>
+        ,nom: <span class="red">'.$usersInfos['lastname'].'</span>
+        ,adresse : <span class="red">'.$usersInfos['adress'].'</span>
+        ,email: <span class="red">'.$usersInfos['email']. '</span>
+        et son âge :<span class="red">' .$usersInfos['age'].'</span>')
+    ;
 
 
     ?>
