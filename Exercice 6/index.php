@@ -1,3 +1,5 @@
+<?php $names = ['Emma','Jade','Louise','Gabriel','Léo','Raphaël ',' Lina', 'Louna','Enzo','Anna '];?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,17 +11,18 @@
 
 
 
-<ul>
+    <ul>
     <?php
+//On récupère la taille de l'array avec count()
+    $arrayLength = count($names);
 
-    $firstname = ['Emma','Jade','Louise','Gabriel','Léo','Raphaël ',' Lina', 'Louna','Enzo','Anna '];
-
-    for($i = 0; $i<10; $i++){
-        echo '<li>'.$firstname[$i].'</li>';
+//On boucle autant de fois qu'il y a d'éléments dans l'array
+    for($i = 0; $i < $arrayLength; $i++){
+        echo '<li>'.$names[$i].'</li>';
     }
     ?>
 
-</ul>
+    </ul>
 </body>
 </html>
 
