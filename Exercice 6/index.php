@@ -12,10 +12,10 @@
 <ul>
     <?php
 
-    $name = ['Emma','Jade','Louise','Gabriel','Léo','Raphaël ',' Lina', 'Louna','Enzo','Anna '];
+    $firstname = ['Emma','Jade','Louise','Gabriel','Léo','Raphaël ',' Lina', 'Louna','Enzo','Anna '];
 
     for($i = 0; $i<10; $i++){
-        echo '<li>'.$name[$i].'</li>';
+        echo '<li>'.$firstname[$i].'</li>';
     }
     ?>
 
