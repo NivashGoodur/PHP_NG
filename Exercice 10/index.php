@@ -17,6 +17,21 @@
 //Ex 10-c:
 /* Avec la fonction date () afficher à l'écran la date qu'il sera dans 26jours et 16h sous le format suivant : 2020-12-11 06:42:30*/
 
+/*
 echo date('Y-m-d H:i:s', time()+2304000);
 echo'<br>';
 echo time()+2304000;
+*/
+
+
+
+//Ex 10-d : Créer une variable contenant cette date précise textuelle : "2004-04-16 12:00:00". Le but est d'ajouter 435 jours à cette date puis de l'afficher sous la forme suivant : "samedi 25 juin 2005, 06h 00m 00s" str datetime?
+
+setlocale (LC_TIME, 'fr_FR.utf8','fra');
+
+$dateToTransform = '2004-04-16 12:00:00';
+
+$dateToTransformTimestamp = strtotime($dateToTransform);
+
+$newDateTimestamp = $dateToTransformTimestamp + 435*24*60*60;
+echo strftime('%A %d %B %Y, %H %Mm %Ss', $newDateTimestamp);
