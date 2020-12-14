@@ -6,11 +6,9 @@
     <title>Accueil</title>
 </head>
 <body>
+
+<?php include 'menu.php'; ?>
+
     <h1>Accueil</h1>
-    <ul>
-        <li><a href="accueil.php">Accueil</a></li>
-        <li><a href="contact.php">Contact</a></li>
-        <li><a href="boutique.php">Boutique</a></li>
-    </ul>
 </body>
 </html>
