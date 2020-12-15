@@ -7,12 +7,12 @@
 </head>
 <body>
     <?php
-    if(isset($_GET['name']) == true AND isset($_GET['email']) == true){
+    if(isset($_GET['name']) &&  isset($_GET['email'])){
 
-            echo 'bonjour '.$_GET['name'].' ton adresse email est: '.$_GET['email'];
+            echo 'bonjour '.htmlspecialchars($_GET['name']).' ton adresse email est: '.htmlspecialchars($_GET['email']);
         }
         else{
-            echo 'Veuillez passer par le formulaire';
+            echo 'Veuillez passer par <a href="form.php">le formulaire</a> !';
         }
     ?>
 </body>
