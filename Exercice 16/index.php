@@ -1,6 +1,13 @@
 <?php
 
-    if (isset($_POST['age']) && isset($_POST['email']) && isset($_POST['site'])){
+//Appel des variables
+    if (
+        isset($_POST['age']) &&
+        isset($_POST['email'])&&
+        isset($_POST['site'])){
+
+            //Bloc des vérifs
+
 
         if (filter_var($_POST['age'], FILTER_VALIDATE_INT) > 0 && filter_var($_POST['age'], FILTER_VALIDATE_INT) < 150){
             $correct[] = 'L\'age est correct';
@@ -38,6 +45,7 @@
     </form>
 
 <?php
+
    if(isset($errors)){
         foreach($errors as $error){
         echo '<p style="color:red;">' . $error . '</p>';
@@ -49,7 +57,11 @@
         foreach($correct as $corrects){
             echo '<p style="color:green;">' . $corrects . '</p>';
         }
+        if (count($correct) == 3){
+            echo'<p>Vos données ont été sauvegardées </p>';
+        }
     }
+
 
 ?>
 
