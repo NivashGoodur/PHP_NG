@@ -1,12 +1,20 @@
 <?php
+    //Connexion au fichier
     $myFile = fopen('compteur.txt', 'r+');
-    $compteur = fread($myFile, 5);
 
+    //Récupération du nombre actuel de visite
+    $compteur = fread($myFile, 12);
+
+    //Augmentation de visite de 1
     $compteur++;
 
+    //Replacement du curseur PHP au début(écrire par dessus l'ancien number)
     fseek($myFile, 0);
 
+    //Écriture du nouveau nombre dans le fichier à la place de l'ancien
     fwrite($myFile, $compteur);
+
+    //Fermeture connexion
     fclose($myFile);
 ?>
 
