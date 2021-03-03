@@ -112,7 +112,7 @@ if(
 
         ?>
 
-        <form action="register.php" method="POST">
+        <form action="register.php" method="POST" >
             <input type="text" placeholder="Email" name="email">
             <input type="text" placeholder="Mot de passe" name="password">
             <input type="text" placeholder="Confirmation mot de passe" name="confirmPassword">
