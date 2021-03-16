@@ -1,0 +1,28 @@
+.container{
+    width:50%;
+    margin: auto;
+}
+.view{
+    background-color: #EEEEEE;
+    border-radius: 1px solid black;
+    -webkit-border-radius: 1px solid black;
+    -moz-border-radius: 1px solid black;
+    -ms-border-radius: 1px solid black;
+    -o-border-radius: 1px solid black;
+    padding: 20px;
+    box-sizing: border-box;
+    min-height: 200px;
+}
+
+.button-area button{
+    margin-top: 10px;
+}
+
+.button-area{
+    text-align: center;
+}
+.img-animaux{
+    width: 50%;
+    display: block;
+    margin: auto;
+}

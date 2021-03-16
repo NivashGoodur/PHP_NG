@@ -1,0 +1,12 @@
+.center{
+    text-align:center;
+}
+
+#jours{
+    display:flex;
+    justify-content: center;
+}
+.day{
+    padding: 30px;
+    border: 1px solid black;
+}

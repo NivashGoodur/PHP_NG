@@ -1,0 +1,860 @@
+///////// PHP POO
+
+    -Avantage du procédural :
+        *plus simple à comprendre et donc à apprendre
+
+    -Inconvénient du procédural :
+        *Très compliqué de faire de grosse application (ou site web)
+
+
+
+
+    - POO (Programmation Orientée Objet)
+         * Code modulaire (plus facilement ré-utilisable)
+        * plus intuitif
+        * code beaucoup mieux organisé et donc plus évolutif
+         * facilite le travail à plusieurs sur un projet
+         * la maintenabilié du code est plus simple
+        * le code est mieux factorisé
+
+
+    -La POO est disponible dans PHP depuis PHP4 (partiellement) et PHP5 (complètement)
+
+
+    -Structure d'un objet :
+        -méthodes (fonctions dans un objet)
+         -attributs (variables dans un objet)
+
+         Exemple : voiture "Accelerer()" qui modifie sa "$vitesse" en fonction de sa "$puissance"
+
+
+    -Pour créer des objets, il nous faut une "usine" à objet qu'on appelle une "classe". Par exemple PDO et DateTime sont des classes.
+        *Le nom des classes doit être écrit en Upper Camel Case (Majuscule à chaque mot y compris le premier. Ex: Voiture)
+
+
+        //La classe qui servira "d'usine" à voitures
+        class Voiture{
+            //Membres de la classe (attributs + méthodes)
+        }
+
+        //Création de 2 objets qui sont des instances de la classe Voiture
+        $peugeot = new Voiture();
+        $renault = new Voiture();
+
+    -Principe d'encapsulation :
+
+        *Dans nos classes, les membres (attributs + méthodes) ont une visibilité qui permet ou non de pouvoir accéder et modifier ou non un attribut depuis l'extérieur.
+
+        *En général on évite au maximum de laisser les attribut en public pour éviter qu'une modification directe et non contrôleée "casse" le fonctionnement de l'objet. (exemple: mettre dans la chaîne de texte 'salut' comme valeur pour l'attribut $vitesse d'une voiture). On appelle ça le principe d'encapsulation.
+
+        *En gros on met en public les éléments qu'on souhaite laisser disponible aux développeurs (comme la plupart des méthodes) et on cache les éléments qui font partie du fonctionnement interne de l'objet (comme la plupart des attributs).
+
+    -Instanciation :
+
+        *Quand un objet instancie une classe (création de l'objet à partir de cette classe), il récupère la totalité des membres de la classe.
+
+        *Pour accéder à ces membres (à condition qu'ils soient publiques), on utilise l'opérateur de résolution de portée "->"
+
+            $peugeot->color = accès à l'attribut color.
+
+        *Il est possible d'accéder aux membres de l'objet depuis l'intérieur même d'une méthode via $this :
+
+            class Car{
+
+                public $speed = 0;
+
+                public function count(){
+                    echo 'La vitesse actuelle de la voiture est :' . $this->speed . 'km/h';
+                }
+            }
+
+            $peugeot = new Car();
+
+            $peugeot->count();
+
+
+Exercice 1 :
+
+    Créer une nouvelle classe "Phone" qui devra contenir au moins 5 attributs et au moins 5 méthodes qui réutilisent les attributs de l'objet.
+
+
+////// Constructeur de classe
+
+    -Le constructeur de classe est une méthode comme une autre avec deux particularités supplémentaires :
+        *Elle est exécutée automatiquement lors de la création d'un objet
+        *Elle récupère en paramètres ce qui a été envoyé en argument de la création de l'objet (on peut donc remplir les attriuts via le constructeur)
+
+    -Le fait de "remplir" les attributs d'un objet se dit "hydratation de l'objet"
+
+
+        class Car{
+
+            //Attribut vide par défaut car le constructeur sera chargé de le remplir
+            public $color;
+
+            //Automatiquement la couleur passée dans Car('rouge') sera récupérée dans $newColor
+            public function__construct($newColor){
+
+                //On hydrate l'attribut $this->color de la voiture avec la couleur récupérée par le constructeur
+                $this->color = $newColor
+            }
+        }
+
+
+        $renault = new Car('rouge');
+        $peugeot = new Car('bleu');
+
+        echo 'La première voiture est de couleur '. $renault->color .'<br>';
+        echo 'La première voiture est de couleur '. $peugeot->color .'<br>';
+
+    *Attention : ne jamais créer une méthode portant le même nom que sa classe (sinon cette méthode deviendra elle même un constructeur)
+
+
+Exercice2 :
+1)Faire une copie de l'exercice 1
+2)Ajouteur 2 attributs : color et brand et enlever les valeurs par défaut des 3 autres attributs
+3)Ajouter un constructeur de classe permettant de définir les attributs du téléphone dès l'instanciation.
+4)Créer 3 téléphones différents avec des valeurs différentes
+
+
+///// Destructeur
+
+    *Le destructeur est une méthode comme une autre avec la particularité en plus de s'executer toute seule quand l'objet est détruit
+    (manuellement ou automatiquement en fin de fichier PHP par exemple)
+
+        class Car{
+
+            public function __destruct(){
+                echo 'Je suis mort !';
+            }
+        }
+
+        $peugeot = new Car();
+
+
+
+///// Accesseurs et Mutateurs (getters / setters en anglais)
+
+    *Les getters sont des méthodes que l'on construit nous même permettant de pouvoir "lire" le contenu d'un attribut qui est privé. Un getter doit toujours être nommé "get" suivi du nom de l'attribut qu'il permet de voir. Ex: pour attribuer color, on l'appellera getColor()
+
+
+        class Car{
+
+            private $color = 'rouge';
+
+            public function getColor(){
+                return $this->color;
+            }
+        }
+
+        $renault = new Car();
+
+        echo $renault->color;   //ERREUR car l'attribut est privé
+        echo $renault->getColor();  //Fonctionne car le getter a été crée exprès pour pouvoir récupérer $color margré qu'il soit privé
+
+        *Les setter sont des méthodes qui permettent de modifier de manière contrôlée le contenu d'un attribut qui est privé. Un setter s'appellera toujours "set" suivi du nom de l'attribut qu'il permet de mofifier. Ex: pour l'attribut color, on l'appellera setColor().
+
+            -Le setter avant de modifier la valeur DOIT contrôler que la nouvelle valeur est conforme à ce qui est attendu pour cet attribut. Par exemple pour l'attribut vitesse d'une voiture, il faudra que le setter n'accepte que des entiers positifs.
+
+
+            class Car{
+
+                private $color;
+
+                public function setColor(string $newColor){
+
+                    //Seule 4 couleurs sont autorisées car on l'a décidée comme ça (c'est notre classe après tout !)
+                    if($newColor == 'bleu' || $newColor == 'rouge' || $newColor == 'vert' || $newColor == 'blanc'){
+                        $this->color = $newColor;
+                    }else{
+                        trigger_error('Couleur non autorisée', E_USER_ERROR);
+                    }
+                }
+            }
+
+            $renault = new Car();
+
+            $renault->setColor('rouge');    //Fonctionne car c'est une couleur que le setter autorise
+            $renault->setColor('noir');     //ERREUR car le setter n'autorise pas cette valeur
+            $renault->setColor([1,2,3]);    //ERREUR car le setter n'autorise que les chaînes de texte
+
+
+Ex 3 :
+
+1)Faire une copie de l'ex 2
+2)Créer tous les getters/setters nécessaires pour la classe téléphone
+3)Modifier le constructeur et les autres méthodes pour qu'il respecte le principe d'encapsulation
+4)Après la création des 3 téléphones, afficher une phrase pour chacun d'entres eux contenant toutes les infos de ce dernier:
+    "Ce téléphone est un Samsung de couleur noir, il lui reste 90% de batterie"
+
+
+
+//// Membres statiques et accès
+
+    -Ce qu'on appelle un membre statique est un élément qui n'existe que dans la classe mais pas dans les objets qu'elle permet de créer.
+
+    -Il existe 3 types d'éléments statique :
+
+        *constante de classe
+
+
+            class Car{
+                const WHEELS = 4;
+            }
+
+            //Pour accéder à un élément statique on utilise l'opérateur de résolution de portée "::" directement sur le nom de la classe (sur "Car" dans cet exemple et non pas sur l'objet $peugeot)
+
+            echo Car::WHEELS;
+
+            **On utilise les constantes de classe pour stocker des infos qui ne changeront pas d'un objet à l'autre de la classe. Les constantes par nature sont obligatoirement statiques.
+
+        *attributs statique
+
+            **Un attribut statique est un attribut qui n'existe également que dans la classe et non dans les objets crées avec cette classe.
+
+
+                class Car{
+                    public static $wheels = 4;
+                }
+
+                //Affichera bien "4"
+                echo Car::$wheels;
+
+
+        *méthodes statiques
+
+            **Une méthode statique est aussi un élément qui n'existe que dans la clase.
+
+
+            class Car{
+                public static function test(){
+                    echo 'test';
+                }
+            }
+
+            //Affichera bien "test"
+            Car::test();
+
+            -Pour accéder à un élément statique depuis l'extérieur on utilise le nom de la classe suivi de "::" alors que pour y accéder depuis l'intérieur on utilise "self::" (self est en quelque sorte un $this version classe ou lieu d'objet)
+
+
+/////Méthodes magiques
+
+    *Les méthodes magiques sont des méthodes partculières ayant des comportements supplémentaires par rapport aux méthodes classiques.
+
+    * __construct = méthode qui s'execute automatiquement à la création d'un nouvel objet + récupération des paramètres.
+
+    * __destruct = méthode qui s'execute automatiquement à la destruction de l'objet
+
+    * __get() = méthode qui s'execute automatiquement quand on essaye d'accéder à un attribut privé ou qui n'exise pas. Récupère en paramètre le nom de l'attrribut qu'on a essayé de récupérer.
+
+
+        class Car{
+
+            private $color = 'rouge';
+
+            public function __get($element){
+                return $this->element;
+            }
+        }
+
+        $renault = new Car();
+
+        //Fonctionne car le __get() nous donne accès à l'attribut même s'il est privé
+        echo $renault->color;
+
+
+
+
+    * __set() = méthode qui s'execute automatiquement quand on essaye de modifier un attribut privé ou inexistant. Récupère en paramètre le nom de l'attribut et la valeur qu'on a essayé de lui donner.
+
+
+        class Car{
+
+            private $color= 'rouge';
+
+            public function __set($element, $value){
+                $this->$element = $value;
+            }
+        }
+
+        $renault = new Car();
+
+        //Fonctionne sans erreur grâce à la méthode __set()
+        $renault->color = 'violet';
+
+        ** Faire ça enlève toute notion de principe d'encapsulation ! Cet exemple ne sert qu'à appliquer un fonctionnement possible de la méthode.
+
+        * __isset() = méthode qui s'execute automatiquement si on fait un isset() sur un élément privé ou qui n'existe pas. Récupère en paramètre le nom de l'attribut.
+
+
+        class Car{
+
+            private $color = 'rouge';
+
+            public function __isset($element){
+                return isset($this->element);
+            }
+        }
+
+        $renault = new Car();
+
+        //Fonctionne correctement grâce à la méthode magique __isset()
+        if(isset($renault->color)){
+            echo'Il y a de la couleur !';
+        }else{
+            echo 'Pas de couleur :( ';
+        }
+
+    * __unset() = méthode qui s'execute automatiquement quand on essaye de supprimer un attribut privé ou inexistant. Récupère en paramètre le nom de l'attribut.
+
+        class Car{
+            private $color = 'rouge';
+
+            public function __unset($element){
+                unset($this->element);
+            }
+        }
+
+        $renault = new Car();
+
+        //Fonctionne grâce à la méthode magique __unset()
+        unset($renault->color);
+
+
+    * __toString = méthode qui s'execute automatiquement quand on essaye d'utiliser un objet comme une chaîne de texte (echo par exemple)
+
+        class Car{
+
+            private $color = 'rouge';
+
+            public function __toString(){
+                return 'Je suis une voiture !';
+            }
+        }
+
+        $renault = new Car();
+
+        //Affichera "je suis une voiture !" au lieu d'une erreur PHP, grâce à la méthode magique __tostring()
+        echo $renault;
+
+
+    * __clone() = méthode qui s'execute automatiquement quand on clone un objet(l'execution se fait dans l'objet cloné)
+
+        class Car{
+
+            public $serialNumber;
+
+            public function __clone(){
+                $this->serialNumber .= '-copy';
+            }
+        }
+
+        $voiture1 = new Car();
+        $voiture1->serialNumber = '46';
+
+        $voiture2 = clone $voiture1;
+
+        //Affichera bien "46"
+        echo'Le numéro de série de la voiture1 est '. $voiture1->serialNumber. '<br>';
+        /Affichera"46-copy" (le numéro a changé grâce à la méthode magique __clone() )
+        echo'Le numéro de série de la voiture2 est '. $voiture2->serialNumber. '<br>';
+
+
+
+//////L'héritage
+
+    -Un des principes fondamentaux de la POO est de pouvoir réutiliser du code autant de fois que l'on souhaite tout en ayant la liberté de pouvoir modifier certaines parties.
+
+    -L'héritage est un procédé qui permet de faire en sorte qu'une classe récupère tous les membres (attributs + méthodes) d'une autre classe.
+    On utilise le mot clé "extends" pour faire un héritage.
+
+        //Classe "mère" donc (dont Car hérite)
+        class Vehicle{
+            public $color;
+
+            public function start(){
+                echo'Ca démarre !';
+            }
+        }
+
+        //Classe "fille" (qui hérite de Vehicle via extends)
+        class Car extends Vehicle{
+
+        }
+
+        $peugeot = new Car();
+
+        //Fonctionne sans erreur car la méthode "start" a été récupérée via héritage de la classe "vehicle"
+        $peugeot->start();
+
+    -Quand un attribut ou une méthode est en visibilité "private"; même les classes filles ne peuvent pas y accéder. Il faut à la place utiliser la visibilité "protected" qui protège tout aussi bien que private mais permet quand même l'accès aux classes filles.
+
+    -Il est impossible d'hériter de plusieurs classes en même temps. Par contre une classe peut avoir plusieurs classes "filles".
+
+    -Si jamais une méthode ou un attribut est déclaré à la fois dans la classe mère et dans la classe fille; c'est celui de la fille qui prend le dessus, on appelle ce phénomène une surcharge(ou polymorphisme).
+
+
+        class Vehicle{
+
+            public function start(){
+                echo'Le véhicule démarre !';
+            }
+        }
+
+
+        class Car extends Vehicle{
+
+            public function start(){
+                echo'La voiture démarre !';
+            }
+        }
+
+        $renault = new Car();
+
+        //Affiche "La voiture démarre !" (la fille prend le dessus)
+        $renault->start();
+
+
+    -Si dans une méthode on souhaite appeler une autre méthode faisant parti du parent, on doit utiliser "parent::leNomDeLaMethode()"
+
+
+
+
+///// Classes et méthodes abstraites
+
+    -Une classe abstraite est une classe qu'on ne peut pas instancier (c'est à dire qu'on ne peut pas créer d'objets à partir d'elle). Elle ne sert finalement que pour l'héritage.
+
+        abstract class Vehicle{
+
+        }
+
+        class Car extends Vehicle{
+
+        }
+
+        //Aucun soucis on peut car la classe "Car" n'est pas abstraite
+        $renault = new Car();
+
+        //Erreur PHP car on ne peut pas instancier la classe abstraite "Vehicle"
+        $test= new Vehicle();
+
+    - Une méthode abstraite est une méthode qui est déclarée uniquement pour "forcer" les classes filles à devoir re-créer (surcharger) cette méthode là.
+
+        abstract class Vehicle{
+
+            abstract function start();
+        }
+
+        class Car extends Vehicle{
+
+            public function start(){
+                //code.....
+            }
+        }
+
+
+        //Pas d'erreur car la méthode "start" a bien été re-crée dans "Car"
+        $renault = new Car();
+
+        -ATTENTION: une méthode abstraite ne peut crée que dans une classe abstraite.
+        -Un attribut ne peut pas être abstrait.
+
+
+
+/////Classes et méthodes finales
+
+    -Une classe finale est une classe dont on ne peut pas hériter. Elle sert exclusivement à créer des objets.
+
+    -ATTENTION, on ne crée jamais de classe qui soit abstraite et finale à la fois (inutile)
+
+        final class Car{
+            //...
+        }
+
+        //Erreur PHP car la classe Car ne peut avoir d'enfant (finalité)
+        class Cart extends Car{
+            //...
+        }
+
+        -Un méthode finale est une méthode qui ne peut pas être surchargée dans les classes enfants.
+
+            abstract class Vehicle{
+
+                final public function honk(){
+                    echo'Véhicule klaxonne !';
+                }
+            }
+
+            final class Car extends Vehicle{
+
+                //Erreur PHP car on ne peut pas re-créer la méthode "honk" qui est une méthode finale de la classe parente "Vehicle".
+                public function honk(){
+                echo'Voiture klaxonne !';
+                }
+            }
+
+        -Il est possible de créer une méthode finale dans une classe abstraite
+        -Il ne faut jamais créer de méthode finame dans une classe finale(inutile)
+        -Un attribut ne peut pas être final
+
+
+////// Erreurs et exception
+
+    -Le système des exceptions est un nouveau système d'erreurs plus flexible qui a été ajouté dans PHP pour nous permettre de pouvoir complètement personnaliser les messages d'erreurs et leurs comportements dans PHP.
+
+    -Pour "lancer" une exception (provoquer une erreur), on utilise throw new Exception();
+        Ex: throw new Exception('Texte de l'erreur');
+
+    -Attention : une exception doit toujours être lancée à l'intérieur d'une structure try catch, sinon on provoque une erreur fatale PHP.
+
+
+        try{
+            throw new Exception('Une erreur inutile');
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+
+        -Une exception stop le code du try dans lequel elle se trouve mais pas du reste de la page (sauf si le catch fait un die())
+        -Ce système permet donc de personaliser l'affichage des erreurs dans le catch et aussi ce qu'il doit se passer (stopper ou pas le code avec un "die()" par exemple)
+
+
+
+Exercice :
+
+1) Créer un nouveau dossier pour l'exercice 4.
+2) Dans ce dossier, créer la structure suivante :
+- index.php
+- classes/  (dossier)
+    * Character.class.php
+    * Warrior.class.php
+    * Wizard.class.php
+
+Dans les fichiers Character/Warrior/Wizard, il ne devra il y avoir QUE le code des classes (une par fichier).
+
+3) Créer les 3 classes dans leurs fichiers respectifs. Il devra y avoir les attributs suivant ainsi que leurs getters/setters :
+    Personnages :
+        - $name
+        - $lifePoint
+        - $attackPoint
+    Guerrier :
+        - energyPoint
+    Magicien :
+        - magicPoint
+
+CHECKPOINT FORMATEUR
+
+4) Créer des constructeurs permettant d'hydrater les personnages dès la création d'un nouveau guerrier/magicien
+
+5) Créer une méthode ->talk() qui permettra à tous les personnages de pouvoir afficher une phrase en se présentant avec des informations sur eux:
+    "Salutations, je suis un Guerrier du nom de Conan. J'ai x points de vie, x points d'attaques et il me reste encore x points d'énergie pour attaquer."
+
+CHECKPOINT FORMATEUR
+
+6) Créer une méthode ->attack() qui permettra aux personnages de s'attaquer entre eux en prenant en compte leur energie restante, leur force d'attaque et leur point de vie.
+
+    $gandalf->attack( $conan );
+
+
+
+
+
+///// Interfaces
+
+    *Une interface est un "morceau de code" qui permet de forcer une classe à respecter une certaine structure.
+
+    *Une interface est un peu comme une classe parent avec que des méthodes abstraites.
+
+    *ATTENTION : c'est une mauvaise idée de vouloir absolument créer une classe parente juste pour forcer une structure : il vaux mieux faire une interface à la place.
+
+    *En gros :
+        -Si une classe a des éléments en commun avec una autre classe (Voiture et camion par exemple) : on utilisera une classe parent "Vehicule"
+        -Si une classe a besoin de structure mais n'a aucun rapport avec une autre classe (par exemple "Maison" et "Voiture" voudrait pouvoir avoir de l'entretien), alors on crée une interface "Entretien" qui sera utilisée par les deux classes n'ayant aucun rapport.
+
+        *Une classe ne peut pas hériter de plusieurs classes mais par contre elle peut implémenter autant d'interface qu'elle le souhaite.
+
+        *Le nom des interfaces s'écrit comme celui des classes (en UpperCamelCase)
+
+            interface Pilotage{
+                public function avancer();
+                public function reculer();
+            }
+
+            class Voiture implements Pilotage{
+
+                public function avancer(){
+                    //code...
+                }
+            }
+
+        //Le code au dessus fera une erreur PHP car l'interface "force" la classe à devoir surcharger avancer() et reculer() : il en manque une.
+
+        *ATTENTION : une interface ne doit jamais avoir le même nom qu'une classe
+
+        *Comme les classes, les interfaces peuvent hériter entre elles avec "extends".
+
+
+
+
+///// Traits
+
+    *Un trait est un morceau de code contenant des méthodes et qui peut être inclus dans n'importe quelle classe.
+
+    *On crée un trait et on l'importe dans une classe avec "use"
+
+        trait Mouvement{
+
+            public function avancer(){
+                echo 'Avance !';
+            }
+        }
+
+        class Animal{
+            use Mouvement;
+        }
+
+        *herisson = new Animal();
+        $herisson->avancer();       //Aucune erreur, la classe animal possède bien la méthode "avancer()" grâce au trait "Mouvement"
+
+
+//// Autoload
+
+    *Plutôt que d'inclure tous les fichiers de classes un par un, on peut utiliser l'autoload de PHP qui permet de charger automatiquement un fichier de classe juste avec son nom.
+
+        //Fonction de l'autoload (On peut la personaliser comme on veut changer l'emplacement des fichiers dans le require)
+        function call($className){
+            require 'classes/' . $className . '.class.php';
+        }
+
+        //Enregistrement de l'autoloader auprès de PHP
+        spl_autoload_register('call');
+
+        $herisson = new Animal();   //Si le fichier "/classes/Animal.class.php" existe, il sera automatiquement chargé
+        $peugeot = new Car();   //Si le fichier "/classes/Car.class.php" existe, il sera automatiquement chargé
+        $avion = new Plane();   //Si le fichier "/classes/Plane.class.php" existe, il sera automatiquement chargé
+
+
+
+
+
+/////Espace des noms
+
+    *Nous avons un problème ! Il est impossible de créer des fonctions ou des classes avec le même nom, il y aura une erreur PHP si on le fait.
+    Ce qui est un problème quand par exemple on télécharge et on installe des fichiers PHP fait par d'autres développeurs.
+
+    *Pour régler ce problème on peut utiliser les espaces de noms. Un namespace (=espace de nom) est une sorte de "dossier virtuel" dans lequel du code PHP va être isolé pour ne pas rentrer en conflit avec d'autres codes. Ainsi même si deux fonctions ont les même nom mais en étant dans des namespaces différents, il n'y aura pas de problème !
+
+    *Pour mettre du code dans un namespace, on doit déclarer ce namespace tout en haut du fichier avant tout code PHP:
+
+        <?php
+        namespace Plugin1;
+
+        //Tout le code du fichier en dessous sera isolé dans le namespace "Plugin1"
+
+        *Par convention, le nom des namespaces s'écrit toujours en Upper Camel Case.
+
+        *Toutes les fonctions et classes natives de PHP (Datetime, PDO, strlen, etc...) sont dans le namespace global.
+
+        *L'espace de nom global s'écrit avec un "\". Tout le code PHP "classique" écrit en dehors d'un namespace sera automatiquement dans l'espace de nom global.
+
+        *Les classes PHP natives (PDO,DateTime, etc...) n'existent que dans l'espace global. Si on souhaite s'en servir depuis un autre espace de nom, il faudra les invoquer avec un "\" devant. Exemple :
+
+        <?php
+        namespace Plugin1;
+
+        //Erreur PHP care DateTime n'existe pas dans l'espace de nom "Plugin1"
+        $date = new DateTime();
+
+        //Fonctionne
+        $date = new \DateTime();
+
+        *Si besoin il existe une constante magique: __NAMESPACE__ qui contient le nom du namespace courant actuel.
+
+        *Il est possible de créer des sous namespaces, comme des sous-dossiers. Exemple : namespace A\B; (B est un sous-namespace de A)
+
+            /// Fichier A.php/////
+            <?php
+            namespace A;
+
+            //Ces 2 codes produiront exactement le même résultat
+            B\test();   //Appel relatif (par rapport au namespace courant)
+            \A\B\test();    //Appel absolu (par rapport à la racine "\")
+
+            /// Fichier AB.php/////
+            <?php
+            namespace A\B;
+
+            function test(){
+                //code...
+            }
+
+    *Si un espace de nom est très grand, il est possible de l'importer dans un nom plus court :
+
+        /// Fichier index.php ///
+            <?php
+
+            require 'Plugin.php'
+
+            //Importation de l'espace de nom très long avec un use. Ce dernier sera accessible via le dernier mot "Inutile"
+            use Mon\Super\Plugin\Trop\Bien\Et\Inutile;
+
+            //Le use nous a permis d'utiliser seulement le dernier mot du namespace comme raccourci
+            Inutile\test();
+
+
+
+            /// Fichier : plugin.php ///
+
+            <?php
+
+            namespace Mon\Super\Plugin\Trop\Bien\Et\Inutile;
+
+            function test(){
+                //code...
+            }
+
+        *Cette importation peux également se faire avec un alias (un surnom) :
+
+            ///Fichier : index.php ////
+
+            //Importation avec alias////
+            use Mon\Super\Plugin\Trop\Bien\Et\Inutile as Plugin1;
+
+            //Le use nous a permis d'utiliser l'alias "Plugin1" au lieu d'écrire tout le namespace :
+            Plugin1\test();
+
+
+
+        *Dernière chose possible : on peut importer directement une classe depuis un namespace avec un use:
+
+            /////Fichier index.php///
+
+            <?php
+            require 'Avion.class.php';
+
+            //A la fin on ajoute \Avion pour importer directement la classe
+            use Vehicules\Moteurs\Aeriens\Avion;
+
+            //Pas d'erreur car la classe Avion est directement importée dans le use plus haut !
+
+        ///Fichier : Avion.class.php///
+        <?php
+
+        namespace Vehicules\Moteurs\Aeriens;
+
+        class Avion{
+            //code...
+        }
+
+
+
+////Schémas UML( Unified Modeling Language)
+
+    *Un schéma UML est un shécma qui sert à modéliser visuellement des classes et leurs interactions dans un diagramme.
+
+    *Compréhensible par n'importe qui même qui ne sait pas programmer, c'est un outil essentiel notamment dans le cahier des charges.
+
+    *Exemple de programme pour faire des schémas UML : dia
+
+
+
+//// Docblocks/////
+
+    *Les docblocks sont des commentaires pour commenter des fonctions et des classes de façon plus "professionnelle" que les commentaires habituels.
+
+    /**
+    /*Ceci est un commentaire docblock
+    */
+    class Car{
+
+    }
+
+
+    *Documentation pour rédiger des docblocks : https://docs.phpdoc.org/latest/guide/guides/docblocks.html
+
+    *ATTENTION : A utiliser que sur les classes et les fonctions, pas ailleurs
+
+
+
+/////Composer
+
+    *Avec le  temps, beaucoup de développeur ont développé des fonctions PHP, des classes, des fonctionnalitées , etc ... Et il peut être assez compliqué de tous les installer manuellement..
+
+    *Un logiciel a été crée en  PHP afin de gérer l'installation et la mise à jour de ces "plugins" (paquets) : composer
+
+    *Composer est un gestionnaire de dépendance (dépendance = paquet = plugin) qui permet de :
+        -installer un paquet
+        -désinstaller un paquet
+        -mettre à jour un ou des paquets
+
+
+    *Pour pouvoir se servir de composer sur l'ordinateur :
+        -Il faut déjà avoir installé PHP (PHP doit être accessible dans les variables d'environnement système)
+        -Il faut installer composer depuis le site getcomposer.org
+
+
+    *Composer s'utilise dans un temrinal de commande (n'importe lequel)
+
+    *Si jamais le paquet qu'on souhaite installer dépend d'un ou d'autres paquets pour fonctionner, composer les installera automatiquement.
+
+    *Pour installer un paquet sur notre site avec composer, on tape la commande :
+        composer require symfony/var-dumper
+
+
+    *La liste de tous les paquets est accessible sur le site packagist.org
+
+    *Quand composer a install" des paquets, ce dernier crée 3 choses :
+
+        -Le dossier vendor/     qui contient tout le code PHP des paquets (NE PAS TOUCHER)
+        -Le fichier composer.json qui contient la liste de toutes les dépendances installées dans le projet
+        -Le fichier composer.lock qui est un fichier système servant à composer à savoir l'état actuel d'installation des paquets.
+
+        -Il est possible de modifier à la main le fichier composer.json pour ajouter ou supprimer des trucs
+
+    *Si jamais on télécharge un projet web déjà commencé et qu'il n'y a pas le dossier vendor mais qu'il y a un fichier composer.json, il sufit de ré-installer les paquets pour recréer le dossier vendor avec la commande :
+        composer install
+
+    *Si on souhaite mettre à jour les paquets, la commande est :
+        composer update
+
+    *Pour utiliser sur notre site les paquets installés avec composer, il faut ajouter cette ligne au tout début du fichier :
+
+    <?php
+    require 'vendor/autoload.php';
+
+    //Ensuite les paquets sont utilisables sur la page...(voir la doc des paquets)
+
+
+
+
+
+////// Design Pattern (Patron de conception)
+
+    *Un design pattern est une manière de résoudre un problème avec du code. Ils vont nous aider à mieux "cadrer" la manière dont on va coder le site avec nos classes et nos objets. Il en existe beaucoup dont ceux-ci :
+
+
+        -ACTIVE RECORD :
+            *Un objet construit en active record est une classe qui contiendra tout ce qui est en rapport avec cet objet (attributs + getters/setters + méthodes de fonctionnement)
+
+        -DTO (Data Transfer Object) :
+            *Un objet construit avec le design pattern DTO est une classe qui contiendra uniquement les attributs et les getters/setters. En général il est toujours accompagné d'un DAO (voir ci dessous)
+
+        -DAO (Data Access Object) :
+            *Un objet construit en DAO est une classe qui contiendra uniquement les méthodes de persistance de données (sauvegardes en BDD, récupérations en BDD, modification en BDD, etc...)
+
+
+
+
+/// MVC
+
+    -Le modèle MVC(Modèle Vues Contrôleurs) est un modèle qui permet de créer des sites webs de manière organisée en POO. Le but de ce modèle est de séparer les différents parties des pages d'un site web :
+
+        *Le modèle est la partie qui va gérer la persistance des données (DAO + DTO)
+        *La vue est la partie qui va gérer l'affichage de la page (html front-end + php d'affichage)
+        *Le contrôleur est la partie logique de la page qui va gérer les vues en fonction des modèles.
+
+    -Il y a 2 choses primordiales en MVC :
+
+        *outes les pages du site sont appelée par une seule page physique : index.php (on l'appel le contrôle frontal)
+        *même si toutes pages sont appelées par le contrpoleur frontal, chaque page du site aura son URL à elle (ce qu'on appel une route).
+        C'est le contrôleur frontal qui sera chargé d'aller chercher la bonne page correspondant à la route (URL) demandée
